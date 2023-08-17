@@ -25,27 +25,47 @@ public static class SaveSystem
 
     public static void StartSave()
     {
-        int largestNumber = 0;
-        while (File.Exists(SAVE_FOLDER + "largest_number" + largestNumber + ".txt"))
-        {
-            largestNumber++;
-        }
+        string[] textFiles = Directory.GetFiles(SAVE_FOLDER, "*.txt");
 
-        if (largestNumber == 0)
+        int lgnum = 0;
+        foreach (string textFile in textFiles)
         {
-            string filePath = SAVE_FOLDER + "largest_number" + 0 + ".txt";
+            string fileName = Path.GetFileName(textFile);
 
-            using (FileStream fileStream = File.Create(filePath))
+            // Check if the file name matches the ignore pattern
+            if (fileName.StartsWith(ignoredFileNamePattern))
             {
-                // Write data to the file using the 'fileStream' object
-                string dataToWrite = "DONOT DELETE THIS!";
-                byte[] dataBytes = Encoding.UTF8.GetBytes(dataToWrite);
-                fileStream.Write(dataBytes, 0, dataBytes.Length);
+                Debug.Log("lwda");
+                Debug.Log(textFile);
+                lgnum++;
             }
-            Debug.Log("started saving");
         }
+        Debug.Log("lgnum" + lgnum);
+        if(lgnum == 0)
+        {
+            File.Create(SAVE_FOLDER + "largest_number" + 0 + ".txt");
+        }
+            /*int largestNumber = 0;
+            while (File.Exists(SAVE_FOLDER + "largest_number" + largestNumber + ".txt"))
+            {
+                largestNumber++;
+            }
 
-    }
+            if (largestNumber == 0)
+            {
+                string filePath = SAVE_FOLDER + "largest_number" + 0 + ".txt";
+
+                using (FileStream fileStream = File.Create(filePath))
+                {
+                    // Write data to the file using the 'fileStream' object
+                    string dataToWrite = "DONOT DELETE THIS!";
+                    byte[] dataBytes = Encoding.UTF8.GetBytes(dataToWrite);
+                    fileStream.Write(dataBytes, 0, dataBytes.Length);
+                }
+                Debug.Log("started saving");
+            }*/
+
+        }
 
     public static List<string> ReadItemNames()
     {
@@ -91,13 +111,13 @@ public static class SaveSystem
         {
             largestNumber++;
         }
-        Debug.Log(largestNumber);
+        //Debug.Log(largestNumber);
         
         for(int i = 0; i <= largestNumber; i++)
         {
             if (File.Exists(SAVE_FOLDER + "save_" + i + ".txt"))
             {
-                Debug.Log("filenum: " + i);
+                //Debug.Log("filenum: " + i);
                 numberList.Add(i);
             }
         }
@@ -133,5 +153,14 @@ public static class SaveSystem
         {
             return null;
         }
+    }
+
+    public static void Delete()
+    {
+        if (File.Exists(SAVE_FOLDER + "save_" + loadNumber + ".txt"))
+        {
+            File.Delete(SAVE_FOLDER + "save_" + loadNumber + ".txt");
+        }
+       
     }
 }
