@@ -1,0 +1,1 @@
+{"resolution":70,"roughness":1.7404611110687256,"strength":0.27716147899627688,"radius":2.500267744064331,"move":false,"speed":0.0,"itemName":"New Text"}

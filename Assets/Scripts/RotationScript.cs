@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RotationScript : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class RotationScript : MonoBehaviour
     public float maxRotationAngle = 45f;
 
     private float currentRotationAngle = 0f;
+
+    public Slider rotationSlider;
 
     public bool rotate = false;
 
@@ -22,8 +25,11 @@ public class RotationScript : MonoBehaviour
             Rotate();
         } 
     }
-
-    public void RotateBoolControl()
+    public void OnSliderValueChangedRotation(float value)
+    {
+        maxRotationAngle = rotationSlider.value;
+    }
+        public void RotateBoolControl()
     {
         if (rotate == true && rotate != false ) 
         {
@@ -53,6 +59,6 @@ public class RotationScript : MonoBehaviour
         transform.rotation *= rotatingAxis;
 
         // Optional: Smoothly dampen the rotation speed if needed.
-        //transform.rotation = Quaternion.Slerp(transform.rotation, transform.rotation * rotatingAxis, Time.deltaTime * rotationSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, transform.rotation * rotatingAxis, Time.deltaTime * rotationSpeed);
     }
 }

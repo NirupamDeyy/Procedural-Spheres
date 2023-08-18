@@ -26,12 +26,14 @@ public class AssignDeleteButton : MonoBehaviour
     public string itemName; // The text you want to set
     public TMP_InputField inputField;
 
-    public bool letDelete= false;
+    
 
+    public GameObject confirmToDeletePanel;
 
 
     private void Start()
     {
+        confirmToDeletePanel.SetActive(false);
         for (int i = 0; i < buttonTransforms.Count; i++)
         {
             Button button = buttonTransforms[i].GetComponent<Button>();
@@ -89,8 +91,8 @@ public class AssignDeleteButton : MonoBehaviour
         {
             fileDeLoadNumber = fileNumbers[deleteButtonIndex];
             Debug.Log("got deload num: " + fileDeLoadNumber);
+            confirmToDeletePanel.SetActive(true);
             return fileDeLoadNumber;
-            
         }
         else
         {
@@ -99,13 +101,14 @@ public class AssignDeleteButton : MonoBehaviour
             
         }
     }
- 
+   
     public void DeleteFile()
     {
         int x = fileDeLoadNumber;
         SaveSystem.loadNumber = fileDeLoadNumber; 
         Debug.Log("Deleted file number: " + x);
         SaveSystem.Delete();
+        confirmToDeletePanel.SetActive(false);
     }
 
     public void GetItemName()

@@ -54,10 +54,7 @@ public class Planet : MonoBehaviour {
     
     NoiseFilter noiseFilter;
     
-    private void Awake()
-    {
-        CC = FindObjectOfType<ColourPicker>();
-    }
+    
 
     public void Start()
     {
