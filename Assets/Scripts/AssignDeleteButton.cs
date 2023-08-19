@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Linq;
+using System.IO;
+
 
 public class AssignDeleteButton : MonoBehaviour
 {
@@ -21,18 +20,22 @@ public class AssignDeleteButton : MonoBehaviour
 
     public SaveLoad saveLoad;
 
+    private int ImageNumber;
 
     //public Button myButton; // Reference to your Unity Button
     public string itemName; // The text you want to set
     public TMP_InputField inputField;
 
-    
-
+    public SetGetImage setGetImage;
+    public string FileName;
     public GameObject confirmToDeletePanel;
+    //public int deleteButtonIndex;
 
 
     private void Start()
     {
+        
+
         confirmToDeletePanel.SetActive(false);
         for (int i = 0; i < buttonTransforms.Count; i++)
         {
@@ -44,15 +47,16 @@ public class AssignDeleteButton : MonoBehaviour
             }
             
         }
+
+        setGetImage = FindObjectOfType<SetGetImage>();
         for (int i = 0; i < deleteButtonTransforms.Count; i++)
         {
-           
             Button button = deleteButtonTransforms[i].GetComponent<Button>();
             if (button != null)
             {
                 int deleteButtonIndex = i; // Capture the index in a local variable
                 button.onClick.AddListener(() => AssignConfirmDelete(deleteButtonIndex));
-                
+                button.onClick.AddListener(() => setGetImage.DeleteImageBuffer(deleteButtonIndex));
             }
         }
         List<int> fileNumbers = SaveSystem.GetFileNumbers();
@@ -93,6 +97,7 @@ public class AssignDeleteButton : MonoBehaviour
             Debug.Log("got deload num: " + fileDeLoadNumber);
             confirmToDeletePanel.SetActive(true);
             return fileDeLoadNumber;
+           // return deleteButtonIndex;
         }
         else
         {
@@ -108,7 +113,12 @@ public class AssignDeleteButton : MonoBehaviour
         SaveSystem.loadNumber = fileDeLoadNumber; 
         Debug.Log("Deleted file number: " + x);
         SaveSystem.Delete();
-        confirmToDeletePanel.SetActive(false);
+        
+      
+
+
+        //confirmToDeletePanel.SetActive(false);
+       
     }
 
     public void GetItemName()
@@ -141,9 +151,4 @@ public class AssignDeleteButton : MonoBehaviour
         saveLoad.Load();
     }
 
-    /* public void GetIDNumber(int buttonIndex)
-     {
-         Transform selectedButon = buttonTransforms[buttonIndex].transform;
-         Debug.Log(selectedButon.name);
-     }*/
 }

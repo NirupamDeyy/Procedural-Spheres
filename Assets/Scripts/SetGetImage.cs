@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using Newtonsoft.Json;
-
 
 public class SetGetImage : MonoBehaviour
 {
@@ -13,7 +11,8 @@ public class SetGetImage : MonoBehaviour
     public GameObject RenderCamera;
     public RawImage RI;
     public AssignDeleteButton assignDeleteButton;
-
+    public int deleteButtonIndex;
+   
     public void Start()
     {
         setImage();
@@ -21,7 +20,7 @@ public class SetGetImage : MonoBehaviour
     }
     public void getImage()
     {
-        
+        //RenderCamera.SetActive(true);
         Texture2D texture2D = new Texture2D(RT.width, RT.height, TextureFormat.ARGB32, false);
         RenderTexture.active = RT;
         texture2D.ReadPixels(new Rect(0, 0, RT.width, RT.height),0,0);
@@ -38,20 +37,32 @@ public class SetGetImage : MonoBehaviour
         string Path = Application.persistentDataPath + FileName + ImageNumber + ".png";
         File.WriteAllBytes(Path, bytes);
         Debug.Log("Save Path: " + Path);
+       // RenderCamera.SetActive(false);
     }
     public void setImage()
     {
+        Debug.Log("setImageStarted");
         List<Transform> buttonTransforms = assignDeleteButton.buttonTransforms;
 
         int ImageNumber = 0;
+        while(!File.Exists(Application.persistentDataPath + FileName + ImageNumber + ".png"))
+        {
+            ImageNumber++;
+        }
+
+
+        
+
         while (File.Exists(Application.persistentDataPath + FileName + ImageNumber + ".png"))
         {
+            Debug.Log("image num"+ ImageNumber);
             string path = Application.persistentDataPath + FileName + ImageNumber + ".png";
             byte[] bytes = File.ReadAllBytes(path);
 
             Texture2D texture2D = new Texture2D(2, 2); // Create a new texture for each image
             texture2D.LoadImage(bytes);
             texture2D.Apply();
+            Debug.Log("texture applied for " + ImageNumber);
 
             if (ImageNumber < buttonTransforms.Count)
             {
@@ -81,18 +92,8 @@ public class SetGetImage : MonoBehaviour
             ImageNumber++;
         }
     }
-    /*int largestImageNumber = 0;
-    ImageNumber = largestImageNumber;*/
-    /*string path = Application.persistentDataPath + FileName + ImageNumber + ".png";
-    byte[] bytes = File.ReadAllBytes(path);
-
-    texture2D.LoadImage(bytes);
-    texture2D.Apply ();
-    //get which image to show the file
-    // assign RI texture
-    RI.texture = texture2D;*/
-
-    IEnumerator RenderProcess()
+   
+    IEnumerator  RenderProcess()
     {
         RenderCamera.SetActive(true);
         yield return new WaitForSeconds(0.01f);
@@ -102,9 +103,32 @@ public class SetGetImage : MonoBehaviour
         yield return new WaitForSeconds(0.01f);
         RenderCamera.SetActive(false);
     }
+
+    public int DeleteImageBuffer(int deleteButtonIndex)
+    {
+        Debug.Log (deleteButtonIndex);
+        return  deleteButtonIndex;
+       
+    }
+
+    public void DeleteImage()
+    {
+        int y = deleteButtonIndex;
+       
+        if (File.Exists(Application.persistentDataPath + FileName + y + ".png"))
+        {
+            Debug.Log("deleted image" + y);
+           
+            File.Delete(Application.persistentDataPath + FileName + y + ".png"); 
+        }
+        else
+        {
+            Debug.Log("bhak bc");
+        }
+    }
     public void GetSetImageButton()
     {
-        StartCoroutine(RenderProcess());
+       StartCoroutine(RenderProcess());
     }
 
 }

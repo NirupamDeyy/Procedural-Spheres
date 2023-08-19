@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using UnityEngine;
 
@@ -5,15 +6,16 @@ public class SaveLoad : MonoBehaviour
 {
     public Planet planet;
     public AssignDeleteButton assignDeleteButton;
-    
+    public SetGetImage setGetImage;
+
     public int loadInt = 2;
     public void Awake()
     {
         SaveSystem.Init();
         SaveSystem.StartSave();
-
+        
     }
-    
+
     public void Save()
     {
         int resolution = planet.resolution;
@@ -23,14 +25,14 @@ public class SaveLoad : MonoBehaviour
         bool move = planet.move;
         float speed = planet.speed;
         string itemName = assignDeleteButton.itemName;
-        
 
-        SaveObject saveObject = new SaveObject { resolution = resolution, roughness = roughness, strength = strength, radius = radius, move = move, speed = speed, itemName= itemName,};
+
+        SaveObject saveObject = new SaveObject { resolution = resolution, roughness = roughness, strength = strength, radius = radius, move = move, speed = speed, itemName = itemName, };
 
         string json = JsonUtility.ToJson(saveObject);
         SaveSystem.itemName = itemName;
         SaveSystem.Save(json);
-        
+        setGetImage.getImage();
     }
 
     public void Load( )
@@ -54,7 +56,6 @@ public class SaveLoad : MonoBehaviour
         }
     }
 
-
     private class SaveObject
     {
         public int resolution;
@@ -64,8 +65,6 @@ public class SaveLoad : MonoBehaviour
         public bool move;
         public float speed;
         public string itemName;
-       
-
     }
 
 }

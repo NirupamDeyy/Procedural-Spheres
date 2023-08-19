@@ -1,0 +1,1 @@
+{"resolution":12,"roughness":4.0,"strength":0.8255165219306946,"radius":2.9200000762939455,"move":false,"speed":0.0,"itemName":"DARK_MOON"}

@@ -35,35 +35,15 @@ public static class SaveSystem
             // Check if the file name matches the ignore pattern
             if (fileName.StartsWith(ignoredFileNamePattern))
             {
-                Debug.Log("lwda");
-                Debug.Log(textFile);
-                lgnum++;
+               lgnum++;
             }
         }
-        Debug.Log("lgnum" + lgnum);
+        
         if(lgnum == 0)
         {
             File.Create(SAVE_FOLDER + "largest_number" + 0 + ".txt");
         }
-            /*int largestNumber = 0;
-            while (File.Exists(SAVE_FOLDER + "largest_number" + largestNumber + ".txt"))
-            {
-                largestNumber++;
-            }
-
-            if (largestNumber == 0)
-            {
-                string filePath = SAVE_FOLDER + "largest_number" + 0 + ".txt";
-
-                using (FileStream fileStream = File.Create(filePath))
-                {
-                    // Write data to the file using the 'fileStream' object
-                    string dataToWrite = "DONOT DELETE THIS!";
-                    byte[] dataBytes = Encoding.UTF8.GetBytes(dataToWrite);
-                    fileStream.Write(dataBytes, 0, dataBytes.Length);
-                }
-                Debug.Log("started saving");
-            }*/
+           
 
         }
 
