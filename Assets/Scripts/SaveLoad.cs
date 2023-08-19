@@ -32,7 +32,7 @@ public class SaveLoad : MonoBehaviour
         string json = JsonUtility.ToJson(saveObject);
         SaveSystem.itemName = itemName;
         SaveSystem.Save(json);
-        setGetImage.getImage();
+        setGetImage.GetSetImageButton();
     }
 
     public void Load( )

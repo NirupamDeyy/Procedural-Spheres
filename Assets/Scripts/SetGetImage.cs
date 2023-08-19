@@ -43,30 +43,45 @@ public class SetGetImage : MonoBehaviour
     {
         Debug.Log("setImageStarted");
         List<Transform> buttonTransforms = assignDeleteButton.buttonTransforms;
+        List<int> existingImageNumbers = new List<int>(); // Store existing image numbers
 
-        int ImageNumber = 0;
-        while(!File.Exists(Application.persistentDataPath + FileName + ImageNumber + ".png"))
+        int newLargest = 0;
+        int maxImageNumber = 10;
+        if (File.Exists(Application.persistentDataPath + "aA" + newLargest + ".txt"))
         {
-            ImageNumber++;
+            maxImageNumber =  newLargest;
+        }
+        else
+        {
+            maxImageNumber = 20; 
         }
 
 
-        
-
-        while (File.Exists(Application.persistentDataPath + FileName + ImageNumber + ".png"))
+         // Set the maximum expected image number
+        // Collect the existing image numbers
+        for (int i = maxImageNumber; i >= 0; i--)
         {
-            Debug.Log("image num"+ ImageNumber);
-            string path = Application.persistentDataPath + FileName + ImageNumber + ".png";
+            if (File.Exists(Application.persistentDataPath + FileName + i + ".png"))
+            {
+                existingImageNumbers.Add(i);
+            }
+        }
+        // existingImageNumbers.Reverse();
+        buttonTransforms.Reverse();
+        foreach (int imageNumber in existingImageNumbers)
+        {
+            Debug.Log("image num"+ imageNumber);
+            string path = Application.persistentDataPath + FileName + imageNumber + ".png";
             byte[] bytes = File.ReadAllBytes(path);
 
             Texture2D texture2D = new Texture2D(2, 2); // Create a new texture for each image
             texture2D.LoadImage(bytes);
             texture2D.Apply();
-            Debug.Log("texture applied for " + ImageNumber);
+            Debug.Log("texture applied for " + imageNumber);
 
-            if (ImageNumber < buttonTransforms.Count)
+            if (imageNumber < buttonTransforms.Count)
             {
-                Button button = buttonTransforms[ImageNumber].GetComponent<Button>();
+                Button button = buttonTransforms[imageNumber].GetComponent<Button>();
                 if (button != null)
                 {
                     RawImage rawImage = button.GetComponentInChildren<RawImage>();
@@ -86,10 +101,8 @@ public class SetGetImage : MonoBehaviour
             }
             else
             {
-                Debug.LogError("No button found at index: " + ImageNumber);
+                Debug.LogError("No button found at index: " + imageNumber);
             }
-
-            ImageNumber++;
         }
     }
    

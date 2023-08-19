@@ -42,6 +42,7 @@ public static class SaveSystem
         if(lgnum == 0)
         {
             File.Create(SAVE_FOLDER + "largest_number" + 0 + ".txt");
+            File.Create(Application.persistentDataPath + "aA" + 0 + ".txt");
         }
            
 
@@ -61,6 +62,7 @@ public static class SaveSystem
             // Check if the file name matches the ignore pattern
             if (fileName.StartsWith(ignoredFileNamePattern))
             {
+
                 continue;
             }
 
@@ -114,7 +116,7 @@ public static class SaveSystem
         }
         int newLargest = largestNumber + 1;
         File.Move(SAVE_FOLDER + "largest_number" + largestNumber + ".txt", SAVE_FOLDER + "largest_number" + newLargest + ".txt");
-
+        File.Move(Application.persistentDataPath + "aA" + largestNumber + ".txt", Application.persistentDataPath + "aA" + newLargest + ".txt");
         largestNumber = newLargest;
         saveNumber = largestNumber;
 

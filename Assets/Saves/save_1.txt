@@ -1,0 +1,1 @@
+{"resolution":40,"roughness":4.0,"strength":0.1072191372513771,"radius":2.9200000762939455,"move":false,"speed":0.0,"itemName":"dwd"}

@@ -1,1 +1,0 @@
-{"resolution":70,"roughness":0.7913062572479248,"strength":0.0867573618888855,"radius":2.9200000762939455,"move":false,"speed":0.0,"itemName":"rse"}
