@@ -31,7 +31,7 @@ public class AssignDeleteButton : MonoBehaviour
     //public int deleteButtonIndex;
 
 
-    private void Start()
+    public void Start()
     {
         confirmToDeletePanel.SetActive(false);
         for (int i = 0; i < buttonTransforms.Count; i++)
@@ -56,6 +56,7 @@ public class AssignDeleteButton : MonoBehaviour
         }
         List<int> fileNumbers = SaveSystem.GetFileNumbers();
         List<string> itemNames = SaveSystem.ReadItemNames();
+        Debug.Log(fileNumbers.Count);
         if(itemNames.Count != 0)
         {
             for (int i = 0; i < fileNumbers.Count ; i++)
@@ -85,6 +86,7 @@ public class AssignDeleteButton : MonoBehaviour
     {
         List<int> fileNumbers = SaveSystem.GetFileNumbers();
 
+        fileNumbers.Reverse();
         if (deleteButtonIndex >= 0 && deleteButtonIndex < fileNumbers.Count)
         {
             fileDeLoadNumber = fileNumbers[deleteButtonIndex];
@@ -106,12 +108,10 @@ public class AssignDeleteButton : MonoBehaviour
         int x = fileDeLoadNumber;
         SaveSystem.loadNumber = fileDeLoadNumber; 
         Debug.Log("Deleted file number: " + x);
-        SaveSystem.Delete();
-        
-      
+        //SaveSystem.Delete();
+ 
 
-
-        //confirmToDeletePanel.SetActive(false);
+        confirmToDeletePanel.SetActive(false);
        
     }
 

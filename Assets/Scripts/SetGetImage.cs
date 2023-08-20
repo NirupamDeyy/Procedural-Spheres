@@ -14,7 +14,7 @@ public class SetGetImage : MonoBehaviour
     public RawImage RI;
     public AssignDeleteButton assignDeleteButton;
     public int deleteButtonIndex;
-   
+    public int fileDeLoadNumber;
     public void Start()
     {
         setImage();
@@ -56,7 +56,7 @@ public class SetGetImage : MonoBehaviour
     }
     public void setImage()
     {
-        Debug.Log("setImageStarted");
+        
         List<Transform> buttonTransforms = assignDeleteButton.buttonTransforms;
         List<int> existingImageNumbers = new List<int>(); // Store existing image numbers
 
@@ -72,7 +72,7 @@ public class SetGetImage : MonoBehaviour
         {
             maxImageNumber = 20; 
         }
-        Debug.Log("maxNumber is" + maxImageNumber);
+        //Debug.Log("maxNumber is" + maxImageNumber);
         // Set the maximum expected image number
         // Collect the existing image numbers
         for (int i = maxImageNumber; i >= 0; i--)
@@ -83,8 +83,8 @@ public class SetGetImage : MonoBehaviour
             }
         }
         
-        Debug.Log("existingNumberCount" + existingImageNumbers.Count);
-        Debug.Log("numbewr of buttons" + buttonTransforms.Count);
+        //Debug.Log("existingNumberCount" + existingImageNumbers.Count);
+        //Debug.Log("numbewr of buttons" + buttonTransforms.Count);
         int buttonIndex = 0;
 
         for (int index = 0; index < existingImageNumbers.Count; index++)
@@ -94,7 +94,7 @@ public class SetGetImage : MonoBehaviour
             if (buttonIndex < buttonTransforms.Count)
             {
                 Button button = buttonTransforms[buttonIndex].GetComponent<Button>();
-                Debug.Log("Assigning texture to button " + buttonIndex + " with image number " + imageNumber);
+               // Debug.Log("Assigning texture to button " + buttonIndex + " with image number " + imageNumber);
 
                 if (button != null)
                 {
@@ -142,14 +142,29 @@ public class SetGetImage : MonoBehaviour
 
     public int DeleteImageBuffer(int deleteButtonIndex)
     {
-        Debug.Log (deleteButtonIndex);
-        return  deleteButtonIndex;
-       
+        List<int> fileNumbers = SaveSystem.GetFileNumbers();
+
+        fileNumbers.Reverse();
+        if (deleteButtonIndex >= 0 && deleteButtonIndex < fileNumbers.Count)
+        {
+            fileDeLoadNumber = fileNumbers[deleteButtonIndex];
+            Debug.Log("got deload num: " + fileDeLoadNumber);
+            
+            return fileDeLoadNumber;
+            // return deleteButtonIndex;
+        }
+        else
+        {
+            Debug.Log("zzzz");
+            return -1;
+
+        }
+
     }
 
     public void DeleteImage()
     {
-        int y = deleteButtonIndex;
+        int y = fileDeLoadNumber;
        
         if (File.Exists(Application.persistentDataPath + FileName + y + ".png"))
         {
@@ -159,7 +174,7 @@ public class SetGetImage : MonoBehaviour
         }
         else
         {
-            Debug.Log("bhak bc");
+            Debug.Log("bhak bc image delete nhi hua");
         }
     }
     public void GetSetImageButton()

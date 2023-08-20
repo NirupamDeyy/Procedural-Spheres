@@ -46,7 +46,7 @@ public static class SaveSystem
         }
            
 
-        }
+    }
 
     public static List<string> ReadItemNames()
     {
@@ -54,9 +54,46 @@ public static class SaveSystem
 
         // Get all text files in the specified folder
         string[] textFiles = Directory.GetFiles(SAVE_FOLDER, "*.txt");
+        //foreach (string textFile in textFiles)
 
-        foreach (string textFile in textFiles)
+        List<int> numberList = GetFileNumbers();
+
+        foreach (int num in numberList)
         {
+            if (!File.Exists(SAVE_FOLDER + "save_" + num + ".txt"))
+            {
+                Debug.Log("file not [resent " + num);
+            }
+            else if (File.Exists(SAVE_FOLDER + "save_" + num + ".txt"))
+            {
+                string content = File.ReadAllText(SAVE_FOLDER + "save_" + num + ".txt");
+
+                /*if (fileName.StartsWith(ignoredFileNamePattern))
+                {
+
+                    continue;
+                }
+
+                 Read the content of the text file
+
+                string content = File.ReadAllText(textFile);*/
+
+                //Find the "itemName" field in the content
+                int startIndex = content.IndexOf("\"itemName\"") + "\"itemName\":".Length + 1;
+                int endIndex = content.IndexOf("\"", startIndex + 1);
+
+                if (startIndex >= 0 && endIndex > startIndex)
+                {
+                    string itemName = content.Substring(startIndex, endIndex - startIndex);
+                    Debug.Log(itemName);
+                    itemNames.Add(itemName);
+                }            
+            }
+        }
+        
+        /*    for (int i = 0; i < textFiles.Length; i++) 
+        {
+            string textFile = textFiles[i];
             string fileName = Path.GetFileName(textFile);
 
             // Check if the file name matches the ignore pattern
@@ -70,15 +107,16 @@ public static class SaveSystem
             string content = File.ReadAllText(textFile);
 
             // Find the "itemName" field in the content
-            int startIndex = content.IndexOf("\"itemName\":") + "\"itemName\":".Length;
+            int startIndex = content.IndexOf("\"itemName\"") + "\"itemName\":".Length + 1;
             int endIndex = content.IndexOf("\"", startIndex + 1);
 
             if (startIndex >= 0 && endIndex > startIndex)
             {
                 string itemName = content.Substring(startIndex, endIndex - startIndex);
+                Debug.Log(itemName);
                 itemNames.Add(itemName);
             }
-        }
+        }*/
         itemNames.Reverse();
         return itemNames;
     }
@@ -122,7 +160,6 @@ public static class SaveSystem
 
         File.WriteAllText(SAVE_FOLDER + "save_" + saveNumber + ".txt", saveString);
         Debug.Log("saved_" + saveNumber + "_file");
-        
     }
     public static string Load()
     {

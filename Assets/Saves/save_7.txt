@@ -1,1 +1,0 @@
-{"resolution":93,"roughness":4.0,"strength":-0.26604700088500979,"radius":2.9200000762939455,"move":false,"speed":0.0,"itemName":"pink"}
