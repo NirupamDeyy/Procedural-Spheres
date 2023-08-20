@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using TMPro;
 using System.IO;
 
-
 public class AssignDeleteButton : MonoBehaviour
 {
     [SerializeField]
@@ -34,8 +33,6 @@ public class AssignDeleteButton : MonoBehaviour
 
     private void Start()
     {
-        
-
         confirmToDeletePanel.SetActive(false);
         for (int i = 0; i < buttonTransforms.Count; i++)
         {
@@ -45,9 +42,7 @@ public class AssignDeleteButton : MonoBehaviour
                 int buttonIndex = i; // Capture the index in a local variable
                 button.onClick.AddListener(() => AssignButton(buttonIndex));
             }
-            
         }
-
         setGetImage = FindObjectOfType<SetGetImage>();
         for (int i = 0; i < deleteButtonTransforms.Count; i++)
         {
@@ -63,8 +58,7 @@ public class AssignDeleteButton : MonoBehaviour
         List<string> itemNames = SaveSystem.ReadItemNames();
         if(itemNames.Count != 0)
         {
-             
-            for (int i = 0; i < fileNumbers.Count; i++)
+            for (int i = 0; i < fileNumbers.Count ; i++)
             {
                 Button button = buttonTransforms[i].GetComponent<Button>();
                 if (button != null)

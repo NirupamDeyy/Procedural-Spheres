@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System.Linq;
+using System;
 
 public class SetGetImage : MonoBehaviour
 {
@@ -28,11 +30,24 @@ public class SetGetImage : MonoBehaviour
         byte[] bytes = texture2D.EncodeToPNG();
 
         int ImageNumber = 0;
-        while(File.Exists(Application.persistentDataPath + FileName + ImageNumber + ".png"))
+
+
+
+        int newLargest = 0;
+      
+        while (!File.Exists(Application.persistentDataPath + "aA" + newLargest + ".txt"))
         {
-            ImageNumber++;
-            Debug.Log("new image num" + ImageNumber);
+        newLargest++;
         }
+
+        ImageNumber = newLargest;
+
+
+        /* while (File.Exists(Application.persistentDataPath + FileName + ImageNumber + ".png"))
+         {
+             ImageNumber++;
+             Debug.Log("new image num" + ImageNumber);
+         }*/
 
         string Path = Application.persistentDataPath + FileName + ImageNumber + ".png";
         File.WriteAllBytes(Path, bytes);
@@ -47,6 +62,8 @@ public class SetGetImage : MonoBehaviour
 
         int newLargest = 0;
         int maxImageNumber = 10;
+
+        
         if (File.Exists(Application.persistentDataPath + "aA" + newLargest + ".txt"))
         {
             maxImageNumber =  newLargest;
@@ -55,9 +72,8 @@ public class SetGetImage : MonoBehaviour
         {
             maxImageNumber = 20; 
         }
-
-
-         // Set the maximum expected image number
+        Debug.Log("maxNumber is" + maxImageNumber);
+        // Set the maximum expected image number
         // Collect the existing image numbers
         for (int i = maxImageNumber; i >= 0; i--)
         {
@@ -66,24 +82,29 @@ public class SetGetImage : MonoBehaviour
                 existingImageNumbers.Add(i);
             }
         }
-        // existingImageNumbers.Reverse();
-        buttonTransforms.Reverse();
-        foreach (int imageNumber in existingImageNumbers)
+        
+        Debug.Log("existingNumberCount" + existingImageNumbers.Count);
+        Debug.Log("numbewr of buttons" + buttonTransforms.Count);
+        int buttonIndex = 0;
+
+        for (int index = 0; index < existingImageNumbers.Count; index++)
         {
-            Debug.Log("image num"+ imageNumber);
-            string path = Application.persistentDataPath + FileName + imageNumber + ".png";
-            byte[] bytes = File.ReadAllBytes(path);
+            int imageNumber = existingImageNumbers[index];
 
-            Texture2D texture2D = new Texture2D(2, 2); // Create a new texture for each image
-            texture2D.LoadImage(bytes);
-            texture2D.Apply();
-            Debug.Log("texture applied for " + imageNumber);
-
-            if (imageNumber < buttonTransforms.Count)
+            if (buttonIndex < buttonTransforms.Count)
             {
-                Button button = buttonTransforms[imageNumber].GetComponent<Button>();
+                Button button = buttonTransforms[buttonIndex].GetComponent<Button>();
+                Debug.Log("Assigning texture to button " + buttonIndex + " with image number " + imageNumber);
+
                 if (button != null)
                 {
+                    string imagePath = Application.persistentDataPath + FileName + imageNumber + ".png";
+                    byte[] bytes = File.ReadAllBytes(imagePath);
+
+                    Texture2D texture2D = new Texture2D(2, 2);
+                    texture2D.LoadImage(bytes);
+                    texture2D.Apply();
+
                     RawImage rawImage = button.GetComponentInChildren<RawImage>();
                     if (rawImage != null)
                     {
@@ -98,14 +119,16 @@ public class SetGetImage : MonoBehaviour
                 {
                     Debug.LogError("Button component not found on the button transform.");
                 }
+
+                buttonIndex++; // Move to the next button
             }
             else
             {
-                Debug.LogError("No button found at index: " + imageNumber);
+                Debug.LogError("No more buttons available for assigning images.");
             }
         }
     }
-   
+
     IEnumerator  RenderProcess()
     {
         RenderCamera.SetActive(true);
